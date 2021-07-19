@@ -9,10 +9,6 @@ body {
 	border-right: 1px solid gray;
 }
 
-#tools-dropdown-label {
-	color: white;
-}
-
-#intro-p {
+p, #show-calculations-label {
 	color: white;
 }

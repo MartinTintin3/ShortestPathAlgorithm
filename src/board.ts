@@ -108,7 +108,7 @@ export class Board {
 				break;
 		}
 		/* eslint-enable indent */
-		this.ctx.fillText(this.grid[x][y].number.toString(), textX, y * this.cellLength + 3 * (this.cellLength / 4.5), this.cellLength);
+		if((document.getElementById("show-calculations-checkbox") as HTMLInputElement).checked) this.ctx.fillText(this.grid[x][y].number.toString(), textX, y * this.cellLength + 3 * (this.cellLength / 4.5), this.cellLength);
 	}
 
 	public render() : void {

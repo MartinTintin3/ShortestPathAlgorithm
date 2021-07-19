@@ -26,6 +26,11 @@ document.getElementById("find-path-btn").onclick = () => {
 	if(!pathfinder.path(true)) alert("Could not find a path(Pathing)");
 };
 
+document.getElementById("show-calculations-checkbox").onclick = e => {
+	if((e.target as HTMLInputElement).checked) pathfinder.map(false);
+	board.render();
+};
+
 canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 class CleanMouseEvent {

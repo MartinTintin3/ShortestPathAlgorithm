@@ -11,10 +11,7 @@ export class Pathfinder {
 
 	public map(renderProgress: boolean) : boolean {
 		if(!this.board.findCells(cell => cell.type == CellType.START).length || !this.board.findCells(cell => cell.type == CellType.FINISH).length) return false;
-		this.board.forEachCell(cell => {
-			cell.number = 0;
-			if(cell.type == CellType.PATH) cell.type = CellType.AIR;
-		});
+		this.board.forEachCell(cell => cell.number = 0);
 		this.board.render();
 
 		let current: Array<Cell> = [this.board.findCells(cell => cell.type == CellType.START)[0]];
@@ -50,8 +47,11 @@ export class Pathfinder {
 
 	public path(renderProgress: boolean) : boolean {
 		if(!this.board.findCells(cell => cell.type == CellType.START).length || !this.board.findCells(cell => cell.type == CellType.FINISH).length) return false;
-
+		this.board.forEachCell(cell => {
+			if(cell.type == CellType.PATH) cell.type = CellType.AIR;
+		});
 		this.board.render();
+
 		let currentCell: Cell = this.board.findCells(cell => cell.type == CellType.FINISH)[0];
 
 		while(currentCell.type != CellType.START) {
