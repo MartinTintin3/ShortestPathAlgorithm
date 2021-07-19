@@ -14,6 +14,7 @@ board.render();
 
 document.getElementById("clear-walls-btn").onclick = () => {
 	board.findAndReplace(cell => cell.type == CellType.WALL && !cell.wasPath, CellType.AIR);
+	board.findAndReplace(cell => cell.type == CellType.WALL && cell.wasPath, CellType.PATH);
 	board.render();
 };
 
