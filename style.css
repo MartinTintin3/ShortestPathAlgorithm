@@ -1,0 +1,14 @@
+body {
+	text-align: center;
+	margin: 0px;
+	background-color: #323232;
+}
+
+#canvas {
+	border-bottom: 1px solid gray;
+	border-right: 1px solid gray;
+}
+
+#tools-dropdown-label {
+	color: white;
+}
