@@ -20,12 +20,11 @@ document.getElementById("clear-walls-btn").onclick = () => {
 
 document.getElementById("clear-path-btn").onclick = () => {
 	board.findAndReplace(cell => cell.type == CellType.PATH, CellType.AIR);
+	board.forEachCell(cell => cell.wasPath = false);
 	board.render();
 };
 
-document.getElementById("force-render-btn").onclick = () => {
-	board.render();
-};
+document.getElementById("force-render-btn").onclick = () => board.render();
 
 document.getElementById("find-path-btn").onclick = () => {
 	if(!pathfinder.map(true, true)) return alert("Could not find a path(Mapping)");
@@ -35,6 +34,18 @@ document.getElementById("find-path-btn").onclick = () => {
 document.getElementById("show-calculations-checkbox").onclick = e => {
 	if((e.target as HTMLInputElement).checked) pathfinder.map(false, false);
 	board.render();
+};
+
+document.getElementById("cell-count").oninput = e => {
+	const range: HTMLInputElement = e.target as HTMLInputElement;
+
+	document.getElementById("cell-count-span").innerText = `${range.value}x${range.value}`;
+};
+
+document.getElementById("cell-count").onchange = e => {
+	const range: HTMLInputElement = e.target as HTMLInputElement;
+
+	board.reset(ctx, canvas.width / parseInt(range.value as unknown as string));
 };
 
 canvas.addEventListener("contextmenu", e => e.preventDefault());
@@ -69,8 +80,8 @@ const handleMouseEvent = (e: CleanMouseEvent) => {
 
 	if(x <= 0 || y <= 0 || x > canvas.width || y > canvas.height) return;
 
-	const cellX = Math.floor(x / board.cellLength);
-	const cellY = Math.floor(y / board.cellLength);
+	const cellX = Math.floor(x / board.getCellLength());
+	const cellY = Math.floor(y / board.getCellLength());
 
 	if(board.grid[cellX][cellY] == undefined) console.log("invalid location");
 

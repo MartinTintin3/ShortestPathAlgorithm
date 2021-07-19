@@ -4,13 +4,13 @@ import { CellType } from "./enums/cellType";
 export class Board {
 	private ctx: CanvasRenderingContext2D;
 
-	width: number;
-	height: number;
-	rows: number;
-	columns: number;
+	private width: number;
+	private height: number;
+	private rows: number;
+	private columns: number;
 
-	public readonly cellLength: number;
-	public readonly grid: Cell[][];
+	private cellLength: number;
+	public grid: Cell[][];
 
 	constructor(ctx: CanvasRenderingContext2D, cellLength: number) {
 		this.width = ctx.canvas.width;
@@ -34,6 +34,36 @@ export class Board {
 				this.grid[x][y] = new Cell(type, x, y, this);
 			}
 		}
+	}
+
+	public getCellLength() : number {
+		return this.cellLength;
+	}
+
+	public reset(ctx: CanvasRenderingContext2D, cellLength: number) {
+		this.width = ctx.canvas.width;
+		this.height = ctx.canvas.height;
+		this.columns = Math.floor(this.width / cellLength);
+		this.rows = Math.floor(this.height / cellLength);
+		this.ctx = ctx;
+		this.cellLength = cellLength;
+		this.grid = new Array<Array<Cell>>();
+
+		for(let x = 0; x < this.columns; x++) {
+			this.grid.push([]);
+			for(let y = 0; y < this.rows; y++) {
+				let type: CellType = CellType.AIR;
+				if(x == 0 && y == 0) {
+					type = CellType.START;
+				} else if(x == this.columns - 1 && y == this.rows - 1) {
+					type = CellType.FINISH;
+				}
+
+				this.grid[x][y] = new Cell(type, x, y, this);
+			}
+		}
+
+		this.render();
 	}
 
 	// eslint-disable-next-line no-unused-vars
@@ -114,7 +144,7 @@ export class Board {
 				textX += this.cellLength / 4;
 				break;
 			case 4:
-				textX += this.cellLength / 5.5;
+				textX += this.cellLength / 5.75;
 				break;
 		}
 		/* eslint-enable indent */

@@ -9,6 +9,6 @@ body {
 	border-right: 1px solid gray;
 }
 
-p, #show-calculations-label {
+p, label {
 	color: white;
 }

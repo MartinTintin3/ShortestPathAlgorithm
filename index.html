@@ -9,7 +9,11 @@
 	</head>
 	<body>
 		<p id="intro-p">Red is the start, Green is the finish. Left click to place a wall, right click to clear it</p>
-		<canvas id="canvas" width=400 height=400></canvas>
+		<div id="scaling">
+			<label id="cell-count-label" for="cell-count">Cell Count: <span id="cell-count-span">20x20</span></label>
+			<input id="cell-count" type="range" min=5 max=40 step=5 name="cell-count" value=20>
+		</div>
+		<canvas id="canvas" width=600 height=600></canvas>
 		<div id="controls">
 			<button id="find-path-btn">Find Path</button>
 			<button id="clear-walls-btn">Clear Walls</button>
