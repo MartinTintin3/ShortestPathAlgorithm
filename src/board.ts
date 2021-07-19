@@ -56,17 +56,20 @@ export class Board {
 	}
 
 	// eslint-disable-next-line no-unused-vars
-	public findCells(callback: (cell: Cell) => boolean) : Array<Cell> {
+	public findCells(filter: (cell: Cell) => boolean) : Array<Cell> {
 		const result: Array<Cell> = new Array<Cell>();
-		this.grid.forEach(column => column.filter(callback).forEach(item => result.push(item)));
+		this.grid.forEach(column => column.filter(filter).forEach(item => result.push(item)));
 		return result;
 	}
 
-	public findAndReplace(matches: Array<CellType>, replace: CellType) {
-		this.findCells(cell => matches.includes(cell.type)).forEach(cell => {
-			if(cell.type == CellType.PATH) cell.wasPath = true;
-			cell.type = replace;
-		});
+	// eslint-disable-next-line no-unused-vars
+	public findAndReplace(filter: (cell: Cell) => boolean, replace: CellType) : number {
+		let found: number = 0;
+		this.grid.forEach(column => column.filter(filter).forEach(item => {
+			found++;
+			item.type = replace;
+		}));
+		return found;
 	}
 
 	public renderCell(x: number, y: number) : void {

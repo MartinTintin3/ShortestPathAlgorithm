@@ -13,12 +13,12 @@ let mousedown = -1;
 board.render();
 
 document.getElementById("clear-walls-btn").onclick = () => {
-	board.findAndReplace([CellType.WALL], CellType.AIR);
+	board.findAndReplace(cell => cell.type == CellType.WALL && !cell.wasPath, CellType.AIR);
 	board.render();
 };
 
 document.getElementById("clear-path-btn").onclick = () => {
-	board.findAndReplace([CellType.PATH], CellType.AIR);
+	board.findAndReplace(cell => cell.type == CellType.PATH, CellType.AIR);
 	board.render();
 };
 
