@@ -63,7 +63,10 @@ export class Board {
 	}
 
 	public findAndReplace(matches: Array<CellType>, replace: CellType) {
-		this.findCells(cell => matches.includes(cell.type)).forEach(cell => cell.type = replace);
+		this.findCells(cell => matches.includes(cell.type)).forEach(cell => {
+			if(cell.type == CellType.PATH) cell.wasPath = true;
+			cell.type = replace;
+		});
 	}
 
 	public renderCell(x: number, y: number) : void {
