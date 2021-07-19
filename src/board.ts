@@ -62,6 +62,10 @@ export class Board {
 		return result;
 	}
 
+	public findAndReplace(matches: Array<CellType>, replace: CellType) {
+		this.findCells(cell => matches.includes(cell.type)).forEach(cell => cell.type = replace);
+	}
+
 	public renderCell(x: number, y: number) : void {
 		/* eslint-disable indent */
 		let textStyle = "";
@@ -122,7 +126,6 @@ export class Board {
 	}
 
 	public export() : string {
-		this.import(this.grid.map(column => column.map(cell => cell.type).join(",")).join(":"));
 		return this.grid.map(column => column.map(cell => cell.type).join(",")).join(":");
 	}
 
@@ -134,9 +137,28 @@ export class Board {
 		if(columns.length != this.columns) return false;
 		if(!columns.every(column => column.includes(",") && column.split(",").length == this.rows)) return false;
 
+		let importedStart = false;
+		let importedFinish = false;
+		let invalid = false;
 		columns.forEach((column, x) => column.split(",").forEach((row, y) => {
+			if(parseInt(row) == CellType.START.valueOf()) {
+				if(importedStart) {
+					invalid = true;
+					return false;
+				}
+				importedStart = true;
+			}
+			if(parseInt(row) == CellType.FINISH.valueOf()) {
+				if(importedFinish) {
+					invalid = true;
+					return false;
+				}
+				importedFinish = true;
+			}
 			this.grid[x][y] = new Cell(CellType[CellType[parseInt(row)]], x, y, this);
 		}));
+
+		if(invalid) return false;
 
 		this.render();
 		return true;

@@ -12,8 +12,13 @@ const pathfinder = new Pathfinder(board);
 let mousedown = -1;
 board.render();
 
-document.getElementById("clear-btn").onclick = () => {
-	board.clearBoard([CellType.START, CellType.FINISH]);
+document.getElementById("clear-walls-btn").onclick = () => {
+	board.findAndReplace([CellType.WALL, CellType.PATH], CellType.AIR);
+	board.render();
+};
+
+document.getElementById("clear-path-btn").onclick = () => {
+	board.findAndReplace([CellType.PATH], CellType.AIR);
 	board.render();
 };
 
@@ -22,12 +27,12 @@ document.getElementById("force-render-btn").onclick = () => {
 };
 
 document.getElementById("find-path-btn").onclick = () => {
-	if(!pathfinder.map(true)) return alert("Could not find a path(Mapping)");
+	if(!pathfinder.map(true, true)) return alert("Could not find a path(Mapping)");
 	if(!pathfinder.path(true)) alert("Could not find a path(Pathing)");
 };
 
 document.getElementById("show-calculations-checkbox").onclick = e => {
-	if((e.target as HTMLInputElement).checked) pathfinder.map(false);
+	if((e.target as HTMLInputElement).checked) pathfinder.map(false, false);
 	board.render();
 };
 
@@ -101,6 +106,6 @@ document.getElementById("export-btn").onclick = () => {
 document.getElementById("import-btn").onclick = () => {
 	const data = prompt("Paste your board data here(Use the export button to get the board data):");
 	if(data) {
-		if(!board.import(data)) alert("Invalid data");
+		if(!board.import(data)) alert("Invalid data. Either there are invalid characters or there are multiple starts/finishes");
 	}
 };

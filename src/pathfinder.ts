@@ -9,9 +9,12 @@ export class Pathfinder {
 		this.board = board;
 	}
 
-	public map(renderProgress: boolean) : boolean {
+	public map(renderProgress: boolean, clearPath: boolean) : boolean {
 		if(!this.board.findCells(cell => cell.type == CellType.START).length || !this.board.findCells(cell => cell.type == CellType.FINISH).length) return false;
-		this.board.forEachCell(cell => cell.number = 0);
+		this.board.forEachCell(cell => {
+			cell.number = 0;
+			if(clearPath && cell.type == CellType.PATH) cell.type = CellType.AIR;
+		});
 		this.board.render();
 
 		let current: Array<Cell> = [this.board.findCells(cell => cell.type == CellType.START)[0]];
