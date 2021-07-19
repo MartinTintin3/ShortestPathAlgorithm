@@ -63,6 +63,9 @@ export class Pathfinder {
 
 			if(next.type == CellType.START) {
 				if(renderProgress) {
+					this.board.forEachCell(cell => {
+						if(cell.type != CellType.PATH) cell.wasPath = false;
+					});
 					this.board.renderCell(next.x, next.y);
 					return true;
 				}
@@ -73,6 +76,10 @@ export class Pathfinder {
 				currentCell = next;
 			}
 		}
+
+		this.board.forEachCell(cell => {
+			if(cell.type != CellType.PATH) cell.wasPath = false;
+		});
 
 		if(!renderProgress) this.board.render();
 		return true;
