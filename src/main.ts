@@ -13,7 +13,7 @@ let mousedown = -1;
 board.render();
 
 document.getElementById("clear-walls-btn").onclick = () => {
-	board.findAndReplace([CellType.WALL, CellType.PATH], CellType.AIR);
+	board.findAndReplace([CellType.WALL], CellType.AIR);
 	board.render();
 };
 
