@@ -162,40 +162,33 @@ export class Board {
 	}
 
 	public export() : string {
-		return this.grid.map(column => column.map(cell => cell.type).join(",")).join(":");
+		return `${Math.floor(this.ctx.canvas.width / this.cellLength)}?` + this.grid.map(column => column.map(cell => cell.type).join(",")).join(":");
 	}
 
 	public import(data: string) : boolean {
-		const valid = [",", ":", ...Object.keys(CellType).filter(key => !isNaN(parseInt(key)))];
+		const valid = ["?", ",", ":", ...Object.keys(CellType).filter(key => !isNaN(parseInt(key)))];
 		if(!data.split("").every(char => valid.includes(char))) return false;
 
-		const columns = data.split(":");
-		if(columns.length != this.columns) return false;
-		if(!columns.every(column => column.includes(",") && column.split(",").length == this.rows)) return false;
+		if(data.split("?").length != 2 || isNaN(parseInt(data.split("?")[0]))) return false;
+		const cellCount = parseInt(data.split("?")[0]);
+		const columns = data.split("?")[1].split(":");
 
-		let importedStart = false;
-		let importedFinish = false;
-		let invalid = false;
+		// Do more checking
+		if(columns.length != Math.floor(this.width / Math.floor(this.ctx.canvas.width / cellCount))) return false;
+		if(!columns.every(column => column.includes(",") && column.split(",").length == Math.floor(this.height / Math.floor(this.ctx.canvas.width / cellCount)))) return false;
+		if(data.split("").filter(d => parseInt(d) == CellType.START.valueOf()).length > 1 || data.split("").filter(d => parseInt(d) == CellType.FINISH.valueOf()).length > 1) return false;
+
+		this.cellLength = Math.floor(this.ctx.canvas.width / cellCount);
+		this.columns = Math.floor(this.width / this.cellLength);
+		this.rows = Math.floor(this.height / this.cellLength);
+
+		// Apply the data
+		this.reset(this.ctx, this.cellLength);
 		columns.forEach((column, x) => column.split(",").forEach((row, y) => {
-			if(parseInt(row) == CellType.START.valueOf()) {
-				if(importedStart) {
-					invalid = true;
-					return false;
-				}
-				importedStart = true;
-			}
-			if(parseInt(row) == CellType.FINISH.valueOf()) {
-				if(importedFinish) {
-					invalid = true;
-					return false;
-				}
-				importedFinish = true;
-			}
 			this.grid[x][y] = new Cell(CellType[CellType[parseInt(row)]], x, y, this);
 		}));
 
-		if(invalid) return false;
-
+		this.ctx.clearRect(0, 0, this.width, this.height);
 		this.render();
 		return true;
 	}

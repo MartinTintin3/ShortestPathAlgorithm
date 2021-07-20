@@ -7,7 +7,7 @@ const ctx = canvas.getContext("2d");
 
 ctx.translate(0.5, 0.5);
 
-const board = new Board(ctx, 20);
+const board = new Board(ctx, canvas.width / parseInt((document.getElementById("cell-count") as HTMLInputElement).value));
 const pathfinder = new Pathfinder(board);
 let mousedown = -1;
 board.render();
