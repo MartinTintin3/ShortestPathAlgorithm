@@ -88,7 +88,7 @@ const handleMouseEvent = (e: CleanMouseEvent) => {
 	/* eslint-disable indent */
 	switch(e.button) {
 		case 0:
-			if([CellType.START, CellType.FINISH, CellType.WALL].includes(board.grid[cellX][cellY].type)) break;
+			if([CellType.START, CellType.FINISH].includes(board.grid[cellX][cellY].type)) break;
 			if(board.grid[cellX][cellY].type == CellType.PATH) board.grid[cellX][cellY].wasPath = true;
 			if (board.grid[cellX][cellY].type == CellType.AIR || board.grid[cellX][cellY].type == CellType.PATH) {
 				board.grid[cellX][cellY].type = CellType.WALL;
