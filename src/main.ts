@@ -62,8 +62,11 @@ class CleanMouseEvent {
 	}
 }
 
+let filling: boolean | null = null;
+
 window.onmouseup = () => {
 	mousedown = -1;
+	filling = null;
 };
 window.onmousedown = e => {
 	mousedown = e.button;
@@ -90,9 +93,11 @@ const handleMouseEvent = (e: CleanMouseEvent) => {
 		case 0:
 			if([CellType.START, CellType.FINISH].includes(board.grid[cellX][cellY].type)) break;
 			if(board.grid[cellX][cellY].type == CellType.PATH) board.grid[cellX][cellY].wasPath = true;
-			if (board.grid[cellX][cellY].type == CellType.AIR || board.grid[cellX][cellY].type == CellType.PATH) {
+			if ((filling !== null && filling === true) || (filling === null && (board.grid[cellX][cellY].type == CellType.AIR || board.grid[cellX][cellY].type == CellType.PATH))) {
+				if (filling == null) filling = true;
 				board.grid[cellX][cellY].type = CellType.WALL;
-			} else if (board.grid[cellX][cellY].type == CellType.WALL) {
+			} else if ((filling !== null && filling === false) || (filling === null && board.grid[cellX][cellY].type == CellType.WALL)) {
+				if (filling == null) filling = false;
 				board.grid[cellX][cellY].type = board.grid[cellX][cellY].wasPath ? CellType.PATH : CellType.AIR;
 			}
 			break;
