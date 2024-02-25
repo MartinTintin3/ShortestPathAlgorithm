@@ -48,7 +48,7 @@ document.getElementById("cell-count").onchange = e => {
 	board.reset(ctx, canvas.width / parseInt(range.value as unknown as string));
 };
 
-canvas.addEventListener("contextmenu", e => e.preventDefault());
+//canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 class CleanMouseEvent {
 	public readonly button: number;
@@ -90,14 +90,12 @@ const handleMouseEvent = (e: CleanMouseEvent) => {
 		case 0:
 			if([CellType.START, CellType.FINISH, CellType.WALL].includes(board.grid[cellX][cellY].type)) break;
 			if(board.grid[cellX][cellY].type == CellType.PATH) board.grid[cellX][cellY].wasPath = true;
-			board.grid[cellX][cellY].type = CellType.WALL;
+			if (board.grid[cellX][cellY].type == CellType.AIR || board.grid[cellX][cellY].type == CellType.PATH) {
+				board.grid[cellX][cellY].type = CellType.WALL;
+			} else if (board.grid[cellX][cellY].type == CellType.WALL) {
+				board.grid[cellX][cellY].type = board.grid[cellX][cellY].wasPath ? CellType.PATH : CellType.AIR;
+			}
 			break;
-		case 2:
-			if(board.grid[cellX][cellY].type != CellType.WALL) break;
-			board.grid[cellX][cellY].type = board.grid[cellX][cellY].wasPath ? CellType.PATH : CellType.AIR;
-			break;
-		default:
-			return;
 	}
 	/* eslint-enable indent */
 	board.renderCell(cellX, cellY);
