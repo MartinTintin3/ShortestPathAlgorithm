@@ -27,8 +27,8 @@ document.getElementById("clear-path-btn").onclick = () => {
 document.getElementById("force-render-btn").onclick = () => board.render();
 
 document.getElementById("find-path-btn").onclick = () => {
-	if(!pathfinder.map(true, true)) return alert("Could not find a path(Mapping)");
-	if(!pathfinder.path(true)) alert("Could not find a path(Pathing)");
+	if(!pathfinder.map(true, true)) return alert("Could not find a path (Mapping Stage)");
+	if(!pathfinder.path(true)) alert("Could not find a path (Pathing Stage)");
 };
 
 document.getElementById("show-calculations-checkbox").onclick = e => {
